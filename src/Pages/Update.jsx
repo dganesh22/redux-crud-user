@@ -35,14 +35,7 @@ function Update() {
     const submitHandler = async (e) => {
         e.preventDefault()
         try {
-           
-            await UserApi.updateUser(user,params.id)
-                .then(res => {
-                    toast.success(res.data.msg)
-                    navigate(`/`)
-                }).catch(err => {
-                    toast.error(err.response.data.msg)
-                })
+           console.log(`update =`, user)
         } catch (err) {
             toast.error(err.message)
         }

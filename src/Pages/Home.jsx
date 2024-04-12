@@ -4,12 +4,13 @@ import { NavLink } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { retriveUsers } from '../Actions/UserAction'
+import { retriveUsers, deleteUser } from '../Actions/UserAction'
 
 function Home() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch() // dispatches actions
 
-  const [users,setUsers] = useState([])
+ 
+  const users = useSelector(item => item.users || [])
   const [index,setIndex] = useState(0) // beginning index
 
   const itemsPerPage = 5
@@ -33,12 +34,18 @@ function Home() {
 
   useEffect(()=> {
     initUser()
-  },[])
+  },[initUser])
+
 
   // delete 
   const deleteHandler = async (id) => {
       if(window.confirm(`Are you sure to delete user id?`)) {
-         
+         dispatch(deleteUser(id))
+          .unwrap()
+          .then(res => {
+             toast.success(res.msg)
+             initUser()
+          }).catch(err => toast.error(err.msg))
       } else {
         toast.warning(`delete terminated`)
       }
